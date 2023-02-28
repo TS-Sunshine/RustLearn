@@ -14,25 +14,60 @@
 //     makes_copy(x);
     
 // }
-fn main() {
-    //gives_ownership 将返回值转移给s1
-    let s1 = gives_ownership();
+// fn main() {
+//     //gives_ownership 将返回值转移给s1
+//     let s1 = gives_ownership();
 
-    //s2进入作用域
-    let s2 = String::from("hello");
+//     //s2进入作用域
+//     let s2 = String::from("hello");
     
-    //s2被移动到takes_and_gives_back
-    let s3 = takes_and_gives_back(s2);
+//     //s2被移动到takes_and_gives_back
+//     let s3 = takes_and_gives_back(s2);
 
-    let s4 = String::from("hello");
+//     let s4 = String::from("hello");
 
-    let (s2, len) = calculate_length(s4);
+//     let (s2, len) = calculate_length(s4);
     
-    println!("The length of '{}' is {}.", s2, len);
+//     println!("The length of '{}' is {}.", s2, len);
 
-}
+// }
 //这里 s3移出作用域被丢弃，s2也移出作用域，但已经被移走
 
+
+
+
+
+fn main() {
+   let s1 = String::from("hello");
+
+   let length = calculate_length_ref(&s1);
+   print!("The length of {} is {}", s1, length);
+
+    //错误
+    // change(&s1);
+    //可变引用
+    let mut s2 = String::from("hello");
+    change(&mut s2);
+    println!("the new string is{}", s2);
+    // 只能创建一个可变引用
+    let mut s = String::from("mut String");
+    let s1 = &mut s;
+    //这时候使用创建一个对s的可变引用，报错
+    // let s2 = &mut s;
+    // println!("{}，{}", s1, s2);
+
+    let new_wrod = String::from("hello world! sanhu");
+    let size = first_word(&new_wrod);
+    println!("size = {}", size);
+}
+
+fn calculate_length_ref(s: &String) -> usize {
+    s.len()
+}
+
+fn change(some_string: &mut String) {
+   some_string.push_str("string")
+}
 
 fn calculate_length(s: String) -> (String, usize) {
     let length = s.len();
@@ -59,5 +94,17 @@ fn takes_ownership(some_string: String) {
 
 fn makes_copy(some_integer: i32) {
     println!("{}", some_integer);
+}
+
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+    println!("字节数组为:{:?}", bytes);
+    for (i, &item) in bytes.iter().enumerate() {
+       if item == b' ' {
+           return i;
+       } 
+    }
+    return s.len();
 }
 
