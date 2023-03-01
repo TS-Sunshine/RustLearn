@@ -56,9 +56,26 @@ fn main() {
     // let s2 = &mut s;
     // println!("{}，{}", s1, s2);
 
+    //不可变字符串
     let new_wrod = String::from("hello world! sanhu");
     let size = first_word(&new_wrod);
+    //clear 是将字符串变为""
+    // new_wrod.clear();
     println!("size = {}", size);
+    let mut mut_new_word = String::from("hello world!");
+    let size2 = first_word(&mut_new_word);
+    mut_new_word.clear();
+    println!("mut size = {}, str = {}", size2, mut_new_word);
+    
+    //string slice
+    let mut s_slice = String::from("hello world");
+    let slice_str = first_world_slice(&s_slice);
+    // s_slice.clear();
+    println!("slice str len = {}", slice_str);
+
+    let ss = "ddd";
+    ss = "222";
+   
 }
 
 fn calculate_length_ref(s: &String) -> usize {
@@ -106,5 +123,16 @@ fn first_word(s: &String) -> usize {
        } 
     }
     return s.len();
+}
+
+fn first_world_slice(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+    return &s[..];
 }
 
